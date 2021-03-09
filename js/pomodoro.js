@@ -1,7 +1,8 @@
 const pomodoro = document.querySelector('.pomodoro');
 
-let secondsDuration;
+let secondsDuration = 1500;
 let timer;
+let cont = 0;
 const mySound = new Audio("img/alert.mp3");
 
 function addZero(time) {
@@ -22,7 +23,14 @@ function initTimer() {
 
         if (secondsDuration == 0) {
             mySound.play();
-            clearInterval(timer);
+            secondsDuration = 300;
+            cont++;
+
+            if (cont == 2) {
+                clearInterval(timer);
+                secondsDuration = 1500;
+                cont = 0;
+            }
         }
     }, 1000);
 }
@@ -33,13 +41,10 @@ document.addEventListener('click', function (e) {
     if (el.classList.contains('start')) {
         clearInterval(timer);
         initTimer();
-        secondsDuration = 1500;
     }
 
-    if (el.classList.contains('start-rest')) {
+    if (el.classList.contains('stop')) {
         clearInterval(timer);
-        initTimer();
-        secondsDuration = 300;
     }
 
     if (el.classList.contains('reset')) {
@@ -47,10 +52,5 @@ document.addEventListener('click', function (e) {
         pomodoro.innerHTML = '25:00';
         secondsDuration = 1500;
     }
-
-    if (el.classList.contains('reset-rest')) {
-        clearInterval(timer);
-        pomodoro.innerHTML = '5:00';
-        secondsDuration = 300;
-    }
 });
+
